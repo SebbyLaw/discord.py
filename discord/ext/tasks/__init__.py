@@ -106,10 +106,6 @@ class Loop:
                 try:
                     await self.coro(*args, **kwargs)
                     self._last_iteration_failed = False
-                    now = datetime.datetime.now(datetime.timezone.utc)
-                    if now > self._next_iteration:
-                        self._prepare_time_index(now)
-                        self._next_iteration = now
                 except self._valid_exception:
                     self._last_iteration_failed = True
                     if not self.reconnect:
@@ -118,6 +114,12 @@ class Loop:
                 else:
                     if self._stop_next_iteration:
                         return
+
+                    now = datetime.datetime.now(datetime.timezone.utc)
+                    if now > self._next_iteration:
+                        self._prepare_time_index(now)
+                        self._next_iteration = now
+
                     self._current_loop += 1
                     if self._current_loop == self.count:
                         break
