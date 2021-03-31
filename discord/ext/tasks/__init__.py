@@ -165,7 +165,7 @@ class Loop:
         """Optional[:class:`float`]: Read-only value for the number of seconds
         between each iteration. ``None`` if an explicit ``time`` value was passed instead.
 
-        .. versionadded:: 1.7
+        .. versionadded:: 2.0
         """
         return self._seconds
     
@@ -174,7 +174,7 @@ class Loop:
         """Optional[:class:`float`]: Read-only value for the number of minutes
         between each iteration. ``None`` if an explicit ``time`` value was passed instead.
 
-        .. versionadded:: 1.7
+        .. versionadded:: 2.0
         """
         return self._minutes
     
@@ -183,7 +183,7 @@ class Loop:
         """Optional[:class:`float`]: Read-only value for the number of hours
         between each iteration. ``None`` if an explicit ``time`` value was passed instead.
 
-        .. versionadded:: 1.7
+        .. versionadded:: 2.0
         """
         return self._hours
 
@@ -192,7 +192,7 @@ class Loop:
         """Optional[List[:class:`datetime.time`]]: Read-only list for the exact times this loop runs at.
         ``None`` if relative times were passed instead.
 
-        .. versionadded:: 1.7
+        .. versionadded:: 2.0
         """
         if self._time is not None:
             return self._time.copy()
@@ -556,7 +556,7 @@ class Loop:
             value of :class:`datetime.time` should be passed.
             This cannot be used in conjunction with the relative time parameters.
 
-            .. versionadded:: 1.7
+            .. versionadded:: 2.0
 
             .. note::
 
@@ -615,7 +615,7 @@ def loop(*, seconds=0, minutes=0, hours=0, count=None, time=None, reconnect=True
 
             Duplicate times will be ignored, and only run once.
 
-        .. versionadded:: 1.7
+        .. versionadded:: 2.0
 
     count: Optional[:class:`int`]
         The number of loops to do, ``None`` if it should be an
