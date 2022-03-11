@@ -99,8 +99,6 @@ if TYPE_CHECKING:
         ActivityButton,
     )
 
-    from .state import ConnectionState
-
 
 class BaseActivity:
     """The base activity that all user-settable activities inherit from.
@@ -811,16 +809,16 @@ ActivityTypes = Union[Activity, Game, CustomActivity, Streaming, Spotify]
 
 
 @overload
-def create_activity(data: ActivityPayload, state: ConnectionState) -> ActivityTypes:
+def create_activity(data: ActivityPayload) -> ActivityTypes:
     ...
 
 
 @overload
-def create_activity(data: None, state: ConnectionState) -> None:
+def create_activity(data: None) -> None:
     ...
 
 
-def create_activity(data: Optional[ActivityPayload], state: ConnectionState) -> Optional[ActivityTypes]:
+def create_activity(data: Optional[ActivityPayload]) -> Optional[ActivityTypes]:
     if not data:
         return None
 
@@ -833,10 +831,10 @@ def create_activity(data: Optional[ActivityPayload], state: ConnectionState) -> 
         try:
             name = data.pop('name')
         except KeyError:
-            ret = Activity(**data)
+            return Activity(**data)
         else:
             # we removed the name key from data already
-            ret = CustomActivity(name=name, **data)  # type: ignore
+            return CustomActivity(name=name, **data)  # type: ignore
     elif game_type is ActivityType.streaming:
         if 'url' in data:
             # the url won't be None here
@@ -844,9 +842,4 @@ def create_activity(data: Optional[ActivityPayload], state: ConnectionState) -> 
         return Activity(**data)
     elif game_type is ActivityType.listening and 'sync_id' in data and 'session_id' in data:
         return Spotify(**data)
-    else:
-        ret = Activity(**data)
-
-    if isinstance(ret.emoji, PartialEmoji):
-        ret.emoji._state = state
-    return ret
+    return Activity(**data)
